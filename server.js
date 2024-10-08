@@ -4,6 +4,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const userCtrl = require('./controllers/user')
+const teamCtrl = require('./controllers/team')
 
 mongoose.connect(process.env.MONGODB_URI);
 
@@ -15,6 +16,7 @@ app.use(express.json());
 
 // Routes go here
 app.use('/users', userCtrl)
+app.use('/teams', teamCtrl)
 
 
 app.listen((process.env.PORT) || 3000, () => {
