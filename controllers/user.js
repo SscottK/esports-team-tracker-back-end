@@ -76,7 +76,8 @@ router.post('/:userId/newteam', verifyToken, async (req, res) => {
             teamName: req.body.teamName,
             coaches: [user._id]
         })
-        //redirect to a user put to add the team id to users teams array?? maybe await??
+        user.teams.push(team._id);
+        await user.save()
         res.json({ user, team });
     } catch (error) {
         if (res.statusCode === 400) {
@@ -87,7 +88,8 @@ router.post('/:userId/newteam', verifyToken, async (req, res) => {
     }
 });
 
-// adding team to user array
+
+
 
 
 module.exports = router;
