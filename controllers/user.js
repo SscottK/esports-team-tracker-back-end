@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
+const Team = require('../models/team')
 const jwt = require('jsonwebtoken');
-const verifyToken = require('../middleware/verify-token')
+const verifyToken = require('../middleware/verify-token');
+
 
 const SALT_LENGTH = 12;
 
@@ -62,6 +64,30 @@ router.get('/:userId', verifyToken, async (req, res) => {
         }
     }
 });
+
+//create team
+router.post('/:userId/newteam', verifyToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.params.userId);
+        if (!user) {
+            res.status(400).json({error: 'No user found.'});         
+        }
+        const team = await Team.create({
+            teamName: req.body.teamName,
+            coaches: [user._id]
+        })
+        //redirect to a user put to add the team id to users teams array?? maybe await??
+        res.json({ user, team });
+    } catch (error) {
+        if (res.statusCode === 400) {
+            res.status(400).json({error: error.message});
+        } else {
+            res.status(500).json({error: error.message});
+        }
+    }
+});
+
+// adding team to user array
 
 
 module.exports = router;

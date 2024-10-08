@@ -20,6 +20,6 @@ const timeSchema = new mongoose.Schema({
 
 })
 
-const Time = mongoose.Schema('Time', timeSchema)
+const Time = mongoose.model('Time', timeSchema)
 
 module.exports = Time
