@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    displayName: String,
+    displayName: {type: String},
     trackedTimes: [{
         type: mongoose.Schema.ObjectId, 
         ref: 'Time'
@@ -24,6 +24,12 @@ const userSchema = new mongoose.Schema({
         ref: 'Message'
     }]
 })
+
+userSchema.set('toJSON', {
+    transform: (document, returnedObject) => {
+        delete returnedObject.hashedPassword;
+    }
+});
 
 const User = mongoose.model('User', userSchema);
 module.exports = User
