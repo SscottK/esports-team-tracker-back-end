@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
+const verifyToken = require('../middleware/verify-token')
 
 const SALT_LENGTH = 12;
 
@@ -39,11 +40,28 @@ router.post('/signin', async (req, res) => {
             res.json({ token })
         } else {
             res.json({ error: 'Invalid username or password.'})
-        };
+        }
     } catch (error) {
         res.status(400).json({error: error.message});
     }
-})
+});
+
+//get specific user
+router.get('/:userId', verifyToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.params.userId);
+        if (!user) {
+            res.status(400).json({error: 'No user found.'});         
+        }
+        res.json({ user });
+    } catch (error) {
+        if (res.statusCode === 400) {
+            res.status(400).json({error: error.message});
+        } else {
+            res.status(500).json({error: error.message});
+        }
+    }
+});
 
 
 module.exports = router;
