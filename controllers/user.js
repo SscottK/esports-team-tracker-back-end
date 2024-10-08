@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
-const Team = require('../models/team')
+const Team = require('../models/team');
+const Time = require('../models/time')
 const jwt = require('jsonwebtoken');
 const verifyToken = require('../middleware/verify-token');
 
@@ -65,6 +66,38 @@ router.get('/:userId', verifyToken, async (req, res) => {
     }
 });
 
+//Edit user info
+router.put('/:userId', verifyToken, async (req, res) =>{
+    try {
+        if (!req.params.userId === req.user._id) {
+            return res.status(400).json('You are not authorized to do that!')
+        }
+        const updatedUser = await User.findByIdAndUpdate(
+                    req.params.userId, 
+                    req.body, 
+                    {new: true})
+        
+        res.json(updatedUser)
+    } catch (error) {
+        res.status(400).json({ error: error.message})
+    }
+})
 
+//Delete user
+router.delete('/:userId', verifyToken, async (req, res) => {
+    try {        
+        if (!req.params.userId === req.user._id) {
+            return res.status(400).json('You are not authorized to do that!')
+        }
+        const user = await User.findById(req.params.userId)
+        
+        await Time.deleteMany({_id: { $in: user.trackedTimes } })
+        
+        const deletedUser = await User.findByIdAndDelete(req.params.userId)
+        res.json(deletedUser)
+    } catch (error) {
+        res.status(400).json({ error: error.message})
+    }
+})
 
 module.exports = router;
