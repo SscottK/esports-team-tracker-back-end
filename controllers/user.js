@@ -49,6 +49,16 @@ router.post('/signin', async (req, res) => {
     }
 });
 
+//Get all users
+router.get('/', verifyToken, async (req, res) => {
+    try {
+        const users = await User.find({}).populate('teams').populate('trackedTimes')
+        res.status(200).json(users)
+    } catch (error) {
+        res.status(400).json({ error: error.message})
+    }
+})
+
 //get specific user
 router.get('/:userId', verifyToken, async (req, res) => {
     try {
@@ -67,7 +77,7 @@ router.get('/:userId', verifyToken, async (req, res) => {
 });
 
 //Edit user info
-router.put('/:userId', verifyToken, async (req, res) =>{
+router.put('/:userId/edit', verifyToken, async (req, res) =>{
     try {
         if (!req.params.userId === req.user._id) {
             return res.status(400).json('You are not authorized to do that!')

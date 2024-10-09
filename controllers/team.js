@@ -36,6 +36,29 @@ router.get('/:teamId', async (req, res) => {
     } catch (error) {
         res.status(400).json({ error: error.message})
     }
-})
+});
+
+//Edit team
+router.put('/:teamId/edit', verifyToken, async (req, res) => {
+    try {
+        const updatedTeam = await Team.findByIdAndUpdate(
+            req.params.teamId, 
+            req.body, 
+            {new: true})
+            res.json(updatedTeam )
+    } catch (error) {
+        res.status(400).json({ error: error.message})
+    }
+});
+
+//Delete team
+router.delete('/teamId', verifyToken, async (req, res) => {
+    try {
+        const deletedTeam = await Team.findByIdAndDelete(req.params.teamId)
+        res.json(deletedTeam)
+    } catch (error) {
+        res.status(400).json({ error: error.message})
+    }
+});
 
 module.exports = router;
