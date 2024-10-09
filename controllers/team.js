@@ -52,7 +52,7 @@ router.put('/:teamId/edit', verifyToken, async (req, res) => {
 });
 
 //Delete team
-router.delete('/teamId', verifyToken, async (req, res) => {
+router.delete('/:teamId', verifyToken, async (req, res) => {
     try {
         const deletedTeam = await Team.findByIdAndDelete(req.params.teamId)
         res.json(deletedTeam)

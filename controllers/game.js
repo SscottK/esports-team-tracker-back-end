@@ -53,7 +53,7 @@ router.get('/:gameId', verifyToken, async (req, res) => {
     }
 })
 
-//Update team
+//Update game
 router.put('/:gameId/edit', verifyToken, async (req, res) => {
     try {
         const updatedGame = await Game.findByIdAndUpdate(
@@ -63,6 +63,16 @@ router.put('/:gameId/edit', verifyToken, async (req, res) => {
             res.json(updatedGame )
     } catch (error) {
         res.status(400).json({ error: error.message})
+    }
+})
+
+//Delete game
+router.delete('/:gameId', verifyToken, async (req, res) => {
+    try {
+        const deletedGame = await Game.findByIdAndDelete(req.params.gameId);
+        res.json(deletedGame)
+    } catch (error) {
+        res.status(400).json({ error: error.message })
     }
 })
 
