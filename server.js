@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const userCtrl = require('./controllers/user')
 const teamCtrl = require('./controllers/team')
 const gameCtrl = require('./controllers/game')
+const timeCtrl = require('./controllers/time')
 
 mongoose.connect(process.env.MONGODB_URI);
 
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use('/users', userCtrl)
 app.use('/teams', teamCtrl)
 app.use('/games', gameCtrl)
+app.use('/times', timeCtrl)
 
 
 app.listen((process.env.PORT) || 3000, () => {

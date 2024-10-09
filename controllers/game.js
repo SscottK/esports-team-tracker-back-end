@@ -5,6 +5,7 @@ const Team = require('../models/team');
 const Game = require('../models/game');
 const verifyToken = require('../middleware/verify-token');
 
+console.log("game file running")
 //Create game
 router.post('/:teamId/addgame', verifyToken, async (req, res) => {
     try {
@@ -49,7 +50,7 @@ router.get('/:gameId', verifyToken, async (req, res) => {
         }
         res.status(200).json({ game })
     } catch (error) {
-        res.status(400).json({ error: error.message})
+        res.status(400).json({ error: error.message })
     }
 })
 
