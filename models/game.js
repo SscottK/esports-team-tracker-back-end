@@ -8,6 +8,6 @@ const gameSchema = new mongoose.Schema({
     levels: [String]
 })
 
-const Game = mongoose.Schema('Game', gameSchema)
+const Game = mongoose.model('Game', gameSchema)
 
 module.exports = Game
