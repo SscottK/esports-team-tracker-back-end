@@ -3,10 +3,14 @@ dotenv.config();
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const cors = require('cors')
+
 const userCtrl = require('./controllers/user')
 const teamCtrl = require('./controllers/team')
 const gameCtrl = require('./controllers/game')
 const timeCtrl = require('./controllers/time')
+
+app.use(cors({ origin: 'http://localhost:5173'}))
 
 mongoose.connect(process.env.MONGODB_URI);
 

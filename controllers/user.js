@@ -21,6 +21,7 @@ router.post('/signup', async (req, res) => {
             username: req.body.username,
             hashedPassword: bcrypt.hashSync(req.body.password, SALT_LENGTH)
         });
+        
         const token = jwt.sign(
             { username: user.username, _id: user._id },
             process.env.JWT_SECRET
@@ -40,7 +41,7 @@ router.post('/signin', async (req, res) => {
                 {username: user.username, _id: user._id},
                 process.env.JWT_SECRET
             );
-            res.json({ token })
+            res.json({ user,token })
         } else {
             res.json({ error: 'Invalid username or password.'})
         }
@@ -62,7 +63,7 @@ router.get('/', verifyToken, async (req, res) => {
 //get specific user
 router.get('/:userId', verifyToken, async (req, res) => {
     try {
-        const user = await User.findById(req.params.userId);
+        const user = await User.findById(req.params.userId).populate('teams');
         if (!user) {
             res.status(400).json({error: 'No user found.'});         
         }
