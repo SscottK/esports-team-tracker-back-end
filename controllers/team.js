@@ -31,7 +31,7 @@ router.post('/newteam/:userId', verifyToken, async (req, res) => {
 router.get('/:teamId', async (req, res) => {
     try {
         
-        const team = await Team.findById(req.params.teamId)
+        const team = await Team.findById(req.params.teamId).populate('coaches').populate('games').populate('members')
         res.status(200).json({ team })
     } catch (error) {
         res.status(400).json({ error: error.message})

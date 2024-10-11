@@ -63,7 +63,8 @@ router.get('/', verifyToken, async (req, res) => {
 //get specific user
 router.get('/:userId', verifyToken, async (req, res) => {
     try {
-        const user = await User.findById(req.params.userId).populate('teams');
+        const user = await User.findById(req.params.userId)
+        .populate('teams');
         if (!user) {
             res.status(400).json({error: 'No user found.'});         
         }

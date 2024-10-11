@@ -9,13 +9,13 @@ const verifyToken = require('../middleware/verify-token');
 
 
 //Create Time
-router.post('/:gameId/addtime/', verifyToken, async (req, res) => {
+router.post('/addtime', verifyToken, async (req, res) => {
     try {
         const user = await User.findById(req.user._id)
-        const game = await Game.findById(req.params.gameId)
+        // const game = await Game.findById(req.params.gameId)
         const newTime = await Time.create({
             user: user._id,
-            game: game._id,
+            game: req.body.game,
             trackName: req.body.trackName,
             time: req.body.time             
         })
