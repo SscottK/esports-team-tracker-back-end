@@ -69,6 +69,9 @@ router.get('/gettimes/:teamId/:gameId', verifyToken, async (req, res) => {
             //add users time to this idividual track 
             trackData[time.trackName][time.user]= time.time                
         })
+        const trackDataArray = Object.entries(trackData).map(([key, value]) => {
+            return { id: key, ...value };
+          });
             
         // console.log(trackData)       
         res.json({'userdata': userData, 'trackData': trackData})
