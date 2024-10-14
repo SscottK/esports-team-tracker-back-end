@@ -15,8 +15,9 @@ router.post('/:teamId/addgame', verifyToken, async (req, res) => {
         }
         const game = await Game.create({
             gameName: req.body.gameName,
-            levels: [req.body.levels]
+            levels: req.body.levels
         })
+        console.log(game)
         team.games.push(game._id);
         await team.save()
         res.json({ team, game});

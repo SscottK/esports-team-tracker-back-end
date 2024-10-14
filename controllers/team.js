@@ -99,7 +99,9 @@ router.put('/:teamId/edit', verifyToken, async (req, res) => {
             req.params.teamId, 
             req.body, 
             {new: true})
+            
             res.json(updatedTeam )
+            console.log(updatedTeam)
     } catch (error) {
         res.status(400).json({ error: error.message})
     }
